@@ -82,3 +82,104 @@ A comprehensive Traditional Chinese Medicine (TCM) learning platform with intera
    ```bash
    node --version
    npm --version
+   ```
+### Step 2: Install XAMPP
+1. Go to Apache Friends[Apache Friends](https://www.apachefriends.org/)
+2. Download XAMPP for your OS
+3. Run installer with default settings
+4. Open XAMPP Control Panel
+
+### Step 3: Download Project
+  ```bash
+# Clone repository
+git clone https://github.com/yourusername/tcmdemo-master.git
+
+# Navigate to project
+cd tcmdemo-master
+```
+
+### Step 4: Set Up Database
+4.1 Start MySQL
+1. Open XAMPP Control Panel
+2. Click Start for MySQL
+
+4.2 Create Database
+1. Open browser: http://localhost/phpmyadmin
+2. Click New
+3. Database name: tcm_learning
+4. Click Create
+
+4.3 Create Tables
+1. Select tcm_learning database
+2. Click SQL tab
+3. Copy and paste this SQL:
+  ```bash
+-- Users table
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Exercises table
+CREATE TABLE exercises (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    lesson_id INT NOT NULL,
+    question_text TEXT NOT NULL,
+    correct_answer VARCHAR(255) NOT NULL,
+    options JSON,
+    exercise_type ENUM('classification', 'balance', 'voice') DEFAULT 'classification',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- User answers table
+CREATE TABLE user_answers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    exercise_id INT NOT NULL,
+    user_answer VARCHAR(255) NOT NULL,
+    is_correct BOOLEAN DEFAULT FALSE,
+    attempt_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE
+);
+
+-- Wrong answers table
+CREATE TABLE wrong_answers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    exercise_id INT NOT NULL,
+    wrong_answer VARCHAR(255) NOT NULL,
+    attempt_count INT DEFAULT 1,
+    last_attempt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_exercise (user_id, exercise_id)
+);
+
+-- Voice assessments table
+CREATE TABLE voice_assessments (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    exercise_id INT NOT NULL,
+    audio_url VARCHAR(500),
+    transcript TEXT,
+    accuracy_score DECIMAL(5,2),
+    feedback TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Insert sample exercises
+INSERT INTO exercises (lesson_id, question_text, correct_answer, options, exercise_type) VALUES
+(1, '发热 (Fever) belongs to?', 'yang', '["yang","yin"]', 'classification'),
+(1, '畏寒 (Chills) belongs to?', 'yin', '["yang","yin"]', 'classification'),
+(1, '头 (Head) belongs to?', 'yang', '["yang","yin"]', 'classification'),
+(1, '脚 (Feet) belongs to?', 'yin', '["yang","yin"]', 'classification'),
+(1, '背部 (Back) belongs to?', 'yang', '["yang","yin"]', 'classification'),
+(1, '腹部 (Belly) belongs to?', 'yin', '["yang","yin"]', 'classification'),
+(1, 'Say "头在上，属阳"', '头在上，属阳', NULL, 'voice'),
+(1, 'Say "气为阳，血为阴"', '气为阳，血为阴', NULL, 'voice');
+```
