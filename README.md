@@ -183,3 +183,50 @@ INSERT INTO exercises (lesson_id, question_text, correct_answer, options, exerci
 (1, 'Say "头在上，属阳"', '头在上，属阳', NULL, 'voice'),
 (1, 'Say "气为阳，血为阴"', '气为阳，血为阴', NULL, 'voice');
 ```
+
+4. Click Go to execute
+```bash
+# Navigate to backend folder
+cd backend
+
+# Install dependencies
+npm install
+
+# Create uploads folder
+mkdir uploads
+```
+Create .env file in backend folder:
+```bash
+PORT=5000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=tcm_learning
+JWT_SECRET=tcm_learning_secret_key_2026
+```
+### Step 6: Configure Frontend
+```bash 
+# Go back to project root
+cd ..
+
+# Install dependencies
+npm install
+```
+### Step 7: Run the Application
+Terminal 1 - Backend:
+```bash
+cd backend
+npm run dev
+```
+Expected output:
+Server running on port 5000
+Database connected successfully!
+
+## Terminal 2 - Frontend:
+```bash
+cd tcmdemo-master
+npm run dev
+```
+Expected output:
+VITE v4.x ready
+Local: http://localhost:5173/
