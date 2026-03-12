@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { ArrowRight, CheckCircle, BookOpen } from 'lucide-vue-next'
 import LessonOneIntro from './LessonOneIntro.vue'
 import LessonOnePhilosophy from './LessonOnePhilosophy.vue'
@@ -7,14 +7,18 @@ import LessonOneBody from './LessonOneBody.vue'
 import LessonOneBalance from './LessonOneBalance.vue'
 import LessonOneGame from './LessonOneGame.vue'
 import LessonOneSummary from './LessonOneSummary.vue'
+import { useAuthStore } from '../stores/authStore'
+
+const props = defineProps({
+  lessonId: {
+    type: Number,
+    default: 1
+  }
+})
+
+const authStore = useAuthStore()
 
 // Current step state (0 to 5)
-// 0: Intro (导入)
-// 1: Philosophy (讲解一：哲学分类)
-// 2: Body & Symptoms (讲解二：人体与症状)
-// 3: Balance & Mutual Root (讲解三：平衡与互根)
-// 4: Language Practice (语言实操)
-// 5: Summary (小结)
 const currentStep = ref(0)
 const maxSteps = 6
 
@@ -50,7 +54,6 @@ const handleStepComplete = () => {
 
 const nextStep = () => {
   if (currentStep.value < maxSteps - 1) {
-    // Mark current step as completed if not already (though usually handled by internal component event)
     stepStatus.value[currentStep.value].completed = true
     currentStep.value++
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -63,6 +66,30 @@ const prevStep = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 }
+
+// Load saved progress from localStorage
+onMounted(() => {
+  const savedProgress = localStorage.getItem(`lesson_${props.lessonId}_progress`)
+  if (savedProgress) {
+    const parsed = JSON.parse(savedProgress)
+    currentStep.value = parsed.currentStep || 0
+    stepStatus.value = parsed.stepStatus || stepStatus.value
+  }
+})
+
+// Save progress to localStorage
+const saveProgress = () => {
+  localStorage.setItem(`lesson_${props.lessonId}_progress`, JSON.stringify({
+    currentStep: currentStep.value,
+    stepStatus: stepStatus.value
+  }))
+}
+
+// Watch for changes and save
+import { watch } from 'vue'
+watch([currentStep, stepStatus], () => {
+  saveProgress()
+}, { deep: true })
 </script>
 
 <template>
@@ -71,9 +98,12 @@ const prevStep = () => {
     <!-- Progress Header -->
     <div class="mb-8 sticky top-16 z-40 bg-white/90 backdrop-blur-md py-4 border-b border-stone-100">
       <div class="flex items-center justify-between mb-2">
-        <h1 class="text-xl font-bold text-stone-800 font-serif">第一课：日月与阴阳</h1>
+        <h1 class="text-xl font-bold text-stone-800 font-serif">
+          {{ lessonId === 1 ? '第一课：日月与阴阳' : `第${lessonId}课` }}
+        </h1>
         <span class="text-sm font-medium text-stone-500">Step {{ currentStep + 1 }} / {{ maxSteps }}</span>
       </div>
+      
       <!-- Progress Bar -->
       <div class="w-full bg-stone-100 rounded-full h-2 overflow-hidden">
         <div 
@@ -81,7 +111,8 @@ const prevStep = () => {
           :style="{ width: `${progress}%` }"
         ></div>
       </div>
-      <!-- Step Indicators (Mobile hidden, Desktop visible) -->
+      
+      <!-- Step Indicators -->
       <div class="hidden md:flex justify-between mt-2">
         <div 
           v-for="(step, idx) in stepStatus" 
@@ -99,7 +130,7 @@ const prevStep = () => {
       </div>
     </div>
 
-    <!-- Main Content Area with Transition -->
+    <!-- Main Content Area -->
     <div class="min-h-[500px] relative">
       <transition 
         mode="out-in"
@@ -113,6 +144,7 @@ const prevStep = () => {
         <component 
           :is="currentComponent" 
           @complete="handleStepComplete"
+          @show-login="$emit('show-login')"
         />
       </transition>
     </div>

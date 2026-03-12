@@ -9,6 +9,7 @@ const isPlaying = ref(false)
 const activeRowIndex = ref(-1)
 const intervalId = ref(null)
 
+// EXACT data from the design doc
 const yinYangData = [
   { yang: '太阳 (Sun)', yin: '月亮 (Moon)' },
   { yang: '山的南面 (South of Mountain)', yin: '山的北面 (North of Mountain)' },
@@ -42,7 +43,6 @@ const advanceRow = () => {
     activeRowIndex.value++
   } else {
     stopPlay()
-    // Mark as complete when audio finishes
     emit('complete')
     setTimeout(() => {
         activeRowIndex.value = -1
@@ -63,7 +63,6 @@ const reset = () => {
     activeRowIndex.value = -1
 }
 
-// Mark complete on mount for now (can be changed to require interaction)
 onMounted(() => {
   // emit('complete') 
 })
@@ -121,7 +120,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Comparison Table -->
+    <!-- Comparison Table - EXACT from design doc -->
     <div class="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm">
       <div class="p-4 border-b border-stone-100 bg-stone-50 flex justify-between items-center">
         <h3 class="font-bold text-stone-700">经典分类 (Classic Classification)</h3>
@@ -170,7 +169,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Summary Box -->
+    <!-- Summary Box - EXACT from design doc -->
     <div class="bg-amber-50 rounded-xl p-6 border border-amber-100 flex gap-4 items-start">
       <div class="w-1.5 h-full min-h-[3rem] bg-amber-400 rounded-full shrink-0"></div>
       <div>

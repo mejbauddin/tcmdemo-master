@@ -19,7 +19,7 @@ import {
   Video
 } from 'lucide-vue-next'
 
-const emit = defineEmits(['start-learning'])
+const emit = defineEmits(['start-learning', 'show-login'])
 
 // Mobile menu state
 const isMenuOpen = ref(false)
@@ -227,6 +227,10 @@ const toggleLanguage = () => {
 const startLearning = () => {
   emit('start-learning')
 }
+
+const showLogin = () => {
+  emit('show-login')
+}
 </script>
 
 <template>
@@ -261,6 +265,14 @@ const startLearning = () => {
             >
               <Languages class="w-4 h-4" />
               <span>{{ isChinese ? 'EN' : '中' }}</span>
+            </button>
+
+            <!-- Login Button (NEW) -->
+            <button 
+              @click="showLogin"
+              class="text-stone-600 hover:text-stone-900 font-medium transition-colors"
+            >
+              {{ isChinese ? '登录' : 'Login' }}
             </button>
 
             <button 
@@ -308,6 +320,15 @@ const startLearning = () => {
             <a href="#features" @click="isMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-stone-900 hover:bg-stone-50">{{ t.nav.features }}</a>
             <a href="#about" @click="isMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-stone-900 hover:bg-stone-50">{{ t.nav.about }}</a>
             <a href="#contact" @click="isMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-stone-900 hover:bg-stone-50">{{ t.nav.contact }}</a>
+            
+            <!-- Mobile Login Button (NEW) -->
+            <button 
+              @click="showLogin(); isMenuOpen = false"
+              class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-stone-700 hover:text-stone-900 hover:bg-stone-50"
+            >
+              {{ isChinese ? '登录' : 'Login' }}
+            </button>
+            
             <button 
               @click="startLearning"
               class="w-full mt-4 bg-stone-900 text-white px-5 py-3 rounded-lg font-medium hover:bg-stone-800 transition-colors"

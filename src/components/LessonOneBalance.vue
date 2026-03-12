@@ -31,7 +31,7 @@ onMounted(() => {
         </h3>
         
         <div class="flex-1 flex flex-col items-center justify-center py-8">
-          <!-- Balance Animation Placeholder -->
+          <!-- Balance Animation -->
           <div class="relative w-48 h-32 flex items-center justify-center mb-6">
             <div class="w-40 h-1 bg-stone-300 rounded-full relative">
               <!-- Pivot -->
@@ -44,10 +44,10 @@ onMounted(() => {
           </div>
 
           <div class="text-center space-y-2">
-            <p class="font-bold text-stone-800">阴阳平衡 = 健康</p>
+            <p class="font-bold text-stone-800 text-lg">阴阳平衡 = 健康</p>
             <p class="text-sm text-stone-500">Yin-Yang Balance = Health</p>
             <div class="w-full h-px bg-stone-100 my-2"></div>
-            <p class="font-bold text-stone-800">阴阳失衡 = 疾病</p>
+            <p class="font-bold text-stone-800 text-lg">阴阳失衡 = 疾病</p>
             <p class="text-sm text-stone-500">Yin-Yang Imbalance = Disease</p>
           </div>
         </div>
@@ -61,7 +61,7 @@ onMounted(() => {
         </h3>
 
         <div class="flex-1 flex flex-col items-center justify-center py-8">
-          <!-- Tai Chi Symbol CSS -->
+          <!-- Tai Chi Symbol -->
           <div class="taichi mb-6 animate-spin-slow"></div>
 
           <div class="text-center space-y-4">
@@ -83,7 +83,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Rhyme Summary -->
+    <!-- Rhyme Summary - EXACT from design doc -->
     <div class="bg-gradient-to-r from-stone-800 to-stone-900 rounded-xl p-8 text-center text-white shadow-lg">
       <h3 class="text-lg font-bold mb-4 text-stone-200 uppercase tracking-widest text-xs">口诀 (Chant)</h3>
       <div class="space-y-2 font-serif text-xl md:text-2xl">

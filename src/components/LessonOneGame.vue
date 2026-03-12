@@ -1,13 +1,19 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useAuthStore } from '../stores/authStore'
+import { useExerciseStore } from '../stores/exerciseStore'
 import { Sun, Moon, CheckCircle, AlertCircle, PartyPopper } from 'lucide-vue-next'
 
 const emit = defineEmits(['complete'])
+const authStore = useAuthStore()
+const exerciseStore = useExerciseStore()
 
 // Game state
 const isCompleted = ref(false)
 const showToast = ref(false)
 const toastMessage = ref('')
+const exercises = ref([])
+const currentExerciseIndex = ref(0)
 
 // Draggable items
 const initialItems = [
@@ -23,6 +29,14 @@ const items = ref([...initialItems])
 const yangZoneItems = ref([])
 const yinZoneItems = ref([])
 
+// Load exercises from backend
+onMounted(async () => {
+  if (authStore.isAuthenticated) {
+    const allExercises = await exerciseStore.fetchExercisesByLesson(1)
+    exercises.value = allExercises.filter(e => e.exercise_type === 'classification')
+  }
+})
+
 // Drag and Drop Handlers
 const onDragStart = (event, item) => {
   event.dataTransfer.dropEffect = 'move'
@@ -30,7 +44,7 @@ const onDragStart = (event, item) => {
   event.dataTransfer.setData('itemId', item.id)
 }
 
-const onDrop = (event, targetZone) => {
+const onDrop = async (event, targetZone) => {
   const itemId = parseInt(event.dataTransfer.getData('itemId'))
   const item = items.value.find(i => i.id === itemId)
 
@@ -51,9 +65,37 @@ const onDrop = (event, targetZone) => {
       isCompleted.value = true
       emit('complete')
     }
+
+    // If authenticated, submit to backend
+    if (authStore.isAuthenticated && exercises.value[currentExerciseIndex.value]) {
+      try {
+        await exerciseStore.submitAnswer(
+          exercises.value[currentExerciseIndex.value].id,
+          targetZone
+        )
+        // Move to next exercise if available
+        if (currentExerciseIndex.value < exercises.value.length - 1) {
+          currentExerciseIndex.value++
+        }
+      } catch (error) {
+        console.error('Failed to submit answer:', error)
+      }
+    }
   } else {
     // Incorrect Drop
     triggerToast(`再想想，${item.hint}`)
+    
+    // Track wrong answer if authenticated
+    if (authStore.isAuthenticated && exercises.value[currentExerciseIndex.value]) {
+      try {
+        await exerciseStore.submitAnswer(
+          exercises.value[currentExerciseIndex.value].id,
+          item.type // Wrong answer
+        )
+      } catch (error) {
+        console.error('Failed to submit wrong answer:', error)
+      }
+    }
   }
 }
 
@@ -71,6 +113,7 @@ const resetGame = () => {
   yinZoneItems.value = []
   isCompleted.value = false
   showToast.value = false
+  currentExerciseIndex.value = 0
 }
 
 // Sentence Patterns Data for reference
@@ -102,6 +145,17 @@ const patterns = [
         <p class="font-medium text-stone-900 mb-1">{{ pat.text }}</p>
         <p class="text-xs text-stone-500 italic">{{ pat.example }}</p>
       </div>
+    </div>
+
+    <!-- Login Prompt if not authenticated -->
+    <div v-if="!authStore.isAuthenticated" class="bg-yellow-50 p-6 rounded-xl text-center mb-6">
+      <p class="text-yellow-800 mb-3">Please login to track your progress and save wrong answers</p>
+      <button 
+        @click="$emit('show-login')"
+        class="bg-stone-900 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-stone-800 transition"
+      >
+        Login to Continue
+      </button>
     </div>
 
     <!-- Game Area -->

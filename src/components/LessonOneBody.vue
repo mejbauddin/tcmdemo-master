@@ -4,7 +4,7 @@ import { Info, Volume2 } from 'lucide-vue-next'
 
 const emit = defineEmits(['complete'])
 
-// Body parts data with interactive hotspots
+// Body parts data with interactive hotspots - EXACT from design doc
 const bodyParts = [
   { 
     id: 'head', 
@@ -41,21 +41,39 @@ const bodyParts = [
     type: 'yin',
     content: '脚在下，属阴 (The feet are lower, belong to Yin)',
     pinyin: 'jiǎo zài xià, shǔ yīn'
+  },
+  { 
+    id: 'surface', 
+    label: '体表 (Body Surface)', 
+    cx: 200, 
+    cy: 150, 
+    type: 'yang',
+    content: '体表属阳 (Body surface belongs to Yang)',
+    pinyin: 'tǐ biǎo shǔ yáng'
+  },
+  { 
+    id: 'interior', 
+    label: '体内 (Body Interior)', 
+    cx: 200, 
+    cy: 300, 
+    type: 'yin',
+    content: '体内属阴 (Body interior belongs to Yin)',
+    pinyin: 'tǐ nèi shǔ yīn'
   }
 ]
 
-// Symptoms data
+// Symptoms data - EXACT from design doc
 const symptoms = [
   {
     type: 'yang',
     title: '阳症 (Yang Symptoms)',
-    desc: '色泽鲜明 (Bright color), 发热 (Fever), 口渴喜冷 (Thirsty & prefers cold), 兴奋 (Excited)',
+    desc: '色泽鲜明 (Bright color), 发热 (Fever), 口渴喜冷 (Thirsty & prefers cold), 兴奋 (Excited), 烦躁 (Irritable), 面红 (Red face), 怕热 (Heat intolerance), 喜冷饮 (Prefers cold drinks), 小便黄 (Yellow urine), 大便干 (Dry stool)',
     example: '发热属阳 (Fever belongs to Yang)'
   },
   {
     type: 'yin',
     title: '阴症 (Yin Symptoms)',
-    desc: '色泽晦暗 (Dull color), 畏寒 (Chills), 口不渴/喜热 (Not thirsty/prefers hot), 抑制 (Inhibited)',
+    desc: '色泽晦暗 (Dull color), 畏寒 (Chills), 口不渴/喜热 (Not thirsty/prefers hot), 抑制 (Inhibited), 面色白 (Pale face), 怕冷 (Cold intolerance), 喜温 (Prefers warmth), 小便清长 (Clear urine), 大便稀溏 (Loose stool)',
     example: '畏寒属阴 (Chills belong to Yin)'
   }
 ]
@@ -67,16 +85,15 @@ const activePart = ref(null)
 const handlePartClick = (part) => {
   activePartId.value = part.id
   activePart.value = part
-  // Could emit 'complete' after exploring enough parts
 }
 
 const sentencePatterns = [
   { text: '头在上，属阳。', pinyin: 'Tóu zài shàng, shǔ yáng.', trans: 'The head is above, belongs to Yang.' },
+  { text: '脚在下，属阴。', pinyin: 'Jiǎo zài xià, shǔ yīn.', trans: 'The feet are below, belong to Yin.' },
   { text: '气为阳，血为阴。', pinyin: 'Qì wéi yáng, xuè wéi yīn.', trans: 'Qi is Yang, blood is Yin.' },
-  { text: '天属阳，地属阴。', pinyin: 'Tiān shǔ yáng, dì shǔ yīn.', trans: 'Heaven belongs to Yang, Earth belongs to Yin.' }
+  { text: '背为阳，腹为阴。', pinyin: 'Bèi wéi yáng, fù wéi yīn.', trans: 'The back is Yang, the abdomen is Yin.' }
 ]
 
-// Auto-complete for demo purposes (in real app, track user interaction)
 onMounted(() => {
   // emit('complete')
 })
@@ -131,7 +148,7 @@ onMounted(() => {
               stroke-linejoin="round"
             />
             
-            <!-- Midline (Meridian concept) -->
+            <!-- Midline -->
             <line x1="200" y1="40" x2="200" y2="350" stroke="#e7e5e4" stroke-width="2" stroke-dasharray="5,5" />
 
             <!-- Connecting Lines -->
@@ -150,7 +167,7 @@ onMounted(() => {
                @click="handlePartClick(part)" 
                class="cursor-pointer group"
             >
-              <!-- Ripple effect for active/hover -->
+              <!-- Ripple effect -->
               <circle 
                 :cx="part.cx" 
                 :cy="part.cy" 
@@ -173,7 +190,7 @@ onMounted(() => {
                 ]"
               />
 
-              <!-- Label (visible on hover or active) -->
+              <!-- Label -->
               <text 
                 :x="part.cx > 200 ? part.cx + 50 : part.cx - 50" 
                 :y="part.cy + 5" 
@@ -222,7 +239,7 @@ onMounted(() => {
       <!-- Right Column: Symptoms & Sentences -->
       <div class="space-y-8">
         
-        <!-- Symptoms List -->
+        <!-- Symptoms List - EXACT from design doc -->
         <div class="bg-stone-50 rounded-2xl p-6 border border-stone-100">
            <h3 class="text-stone-500 font-bold mb-4 w-full text-sm uppercase tracking-wider">常见症状 (Common Symptoms)</h3>
            <div class="space-y-4">
