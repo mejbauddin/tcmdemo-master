@@ -92,7 +92,7 @@ A comprehensive Traditional Chinese Medicine (TCM) learning platform with intera
 ### Step 3: Download Project
   ```bash
 # Clone repository
-git clone https://github.com/yourusername/tcmdemo-master.git
+git clone https://github.com/mejbauddin/tcmdemo-master.git
 
 # Navigate to project
 cd tcmdemo-master
