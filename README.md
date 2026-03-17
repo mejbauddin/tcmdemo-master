@@ -323,3 +323,196 @@ tcmdemo-master/
     - Part 5: Language Practice
     - Part 6: Summary & Exercises
    
+#### 4. Doing Exercises
+1. Go to Part 6 (Summary)
+2. Click "第一课 60题" card
+3. Choose category:
+    - 全部 (All): 60 questions
+    - 词汇 (Vocabulary): 20 questions
+    - 阴阳属性 (Yin-Yang): 20 questions
+    - 应用 (Application): 20 questions
+
+4. Select answer (A, B, C, D)
+5. Click "提交答案" to check
+6. Click "查看解析" for explanation
+7. Click "下一题" to continue
+
+#### 5. Voice Assessment
+1. In Part 6, scroll to "AI 语音评测练习"
+2. Click any phrase
+3. Allow microphone access
+4. Click red button to record
+5. Click square to stop
+6. Click "提交评测" for feedback
+7. View score (0-100%)
+
+#### 6. Games
+1. In Part 6, click "阴阳调和师"
+2. Choose game:
+    - Game 1: Drag cards to Yin/Yang zones
+    - Game 2: Drag weights to balance scale
+  
+#### 7. Tracking Progress
+1. Click username (top-right)
+2. View profile:
+    - Username, Email
+    - Member since
+    - Wrong answers list
+3. Click "Wrong Answers" to review mistakes
+
+#### 📡 API Documentation
+Base URL: http://localhost:5000/api
+Register
+```bash
+# http
+POST /auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "password123"
+}
+```
+Login
+```bash
+# http
+POST /auth/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "password123"
+}
+```
+Get Exercises
+```bash
+# http
+GET /exercises
+Authorization: Bearer <token>
+```
+Submit Answer
+```bash
+# http
+POST /exercises/submit
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "exerciseId": 1,
+  "answer": "B"
+}
+```
+Get Wrong Answers
+```bash
+# http
+GET /exercises/wrong-answers
+Authorization: Bearer <token>
+```
+#### 🔧 Troubleshooting
+Issue 1: Backend Won't Start - Port 5000 in Use
+```bash
+# Find process using port 5000 (Windows)
+netstat -ano | findstr :5000
+
+# Kill process (replace 12345 with PID)
+taskkill /PID 12345 /F
+
+# Or change port in backend/.env
+PORT=5001
+# Update frontend API_URL to http://localhost:5001/api
+```
+#### Issue 2: Database Connection Failed
+Check:
+    - XAMPP MySQL is running (green)
+    - Database tcm_learning exists
+    - .env credentials are correct
+    
+#### Issue 3: Frontend Can't Connect to Backend
+Check:
+    - Backend is running (node backend/server.js)
+    - API URL in src/services/api.js is correct
+    - CORS is enabled in backend
+
+#### Issue 4: Voice Recording Not Working
+   - Allow microphone access in browser
+   - Use Chrome or Edge
+   - Check microphone in other apps
+   - Try on HTTPS in production
+
+#### Issue 5: Exercises Not Showing
+   - Are you logged in?
+   - Check browser console (F12)
+   - Verify database has exercises:
+```bash
+# SQL
+SELECT COUNT(*) FROM exercises;
+```
+#### Issue 6: Login Fails
+   - Is backend running?
+   - Check database connection
+   - Clear localStorage:
+```bash
+localStorage.clear()
+```
+### Quick Diagnostic Commands
+```bash
+# Check backend
+curl http://localhost:5000
+
+# Test registration
+cd backend
+node test-register.mjs
+
+# Check Node version
+node --version
+npm --version
+```
+### Ports Used
+```bash 
+Service	   Port	   Purpose
+Frontend	   5173	   Vue app
+Backend	   5000	   API server
+MySQL	      3306	   Database
+phpMyAdmin	80	      DB management
+```
+### ❓ FAQ
+Q: Do I need internet connection?
+A: Yes, for first-time setup to install packages. After that, runs locally.
+
+Q: Can I use this on mobile?
+A: Yes, the interface is responsive and works on mobile browsers.
+
+Q: How do I reset my password?
+A: Contact admin or use phpMyAdmin to update directly.
+
+Q: Where are voice recordings stored?
+A: In backend/uploads/ folder.
+
+Q: How do I backup my data?
+A: Export database from phpMyAdmin:
+```bash
+# SQL
+mysqldump -u root -p tcm_learning > backup.sql
+```
+Q: Can I add more exercises?
+A: Yes, edit src/data/exercises.js
+
+Q: How do I change language?
+A: Click language toggle button in navbar.
+
+Q: Why is voice assessment giving low scores?
+A: It's simulated for demo. In production, integrate with Google/Azure Speech API.
+
+### 🎉 Success!
+You have successfully installed 智启岐黄 TCM Learning Platform!
+Next Steps:
+
+1. Create account
+2. Complete Lesson 1
+3. Try exercises
+4. Practice voice phrases
+5. Play games
+6. Review wrong answers
+
+Happy Learning! 🌟
