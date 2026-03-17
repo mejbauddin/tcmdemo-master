@@ -472,7 +472,7 @@ npm --version
 ```bash 
 Service	   Port	   Purpose
 Frontend	5173	   Vue app
-Backend	     5000	   API server
+Backend	    5000	   API server
 MySQL	    3306	   Database
 phpMyAdmin	80	      DB management
 ```
