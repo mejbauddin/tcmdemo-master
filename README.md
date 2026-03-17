@@ -230,3 +230,96 @@ npm run dev
 Expected output:
 VITE v4.x ready
 Local: http://localhost:5173/
+
+### Step 8: Open Application
+1. Open browser
+2. Go to: http://localhost:5173
+3. Click "Register" to create account
+4. Start learning!
+
+## 📁 Project Structure
+```bash
+tcmdemo-master/
+├── backend/                          # Backend server
+│   ├── config/
+│   │   └── database.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── exerciseController.js
+│   │   └── voiceController.js
+│   ├── middleware/
+│   │   └── authMiddleware.js
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Exercise.js
+│   │   └── WrongAnswer.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── exerciseRoutes.js
+│   │   └── voiceRoutes.js
+│   ├── uploads/
+│   ├── .env
+│   └── server.js
+│
+├── src/                               # Frontend source
+│   ├── assets/
+│   ├── components/
+│   │   ├── auth/
+│   │   │   ├── LoginModal.vue
+│   │   │   ├── RegisterModal.vue
+│   │   │   └── UserProfile.vue
+│   │   ├── exercises/
+│   │   │   └── ExerciseBank.vue
+│   │   ├── voice/
+│   │   │   └── VoiceAssessment.vue
+│   │   ├── LessonOne.vue
+│   │   ├── LessonOneIntro.vue
+│   │   ├── LessonOnePhilosophy.vue
+│   │   ├── LessonOneBody.vue
+│   │   ├── LessonOneBalance.vue
+│   │   ├── LessonOneGame.vue
+│   │   ├── LessonOneSummary.vue
+│   │   ├── MarketingHome.vue
+│   │   └── TCMHome.vue
+│   ├── data/
+│   │   └── exercises.js
+│   ├── services/
+│   │   ├── api.js
+│   │   ├── authService.js
+│   │   ├── exerciseService.js
+│   │   └── voiceService.js
+│   ├── stores/
+│   │   ├── authStore.js
+│   │   └── exerciseStore.js
+│   ├── App.vue
+│   └── main.js
+│
+├── index.html
+├── package.json
+├── tailwind.config.js
+└── vite.config.js
+```
+
+## 📖 Usage Guide
+#### 1. Registration
+ - Click "Start Learning" or "Login"
+ - Click "Register" link
+ - Fill: Username, Email, Password
+ - Click "Register"
+
+#### 2. Navigation
+ - Sidebar (☰): Lesson directory
+ - Top Navigation: Textbook, Features, Tools
+ - User Menu: Click username for profile
+
+#### 3. Taking a Lesson
+1. Select "第一课: 日月与阴阳" from sidebar
+2. Navigate using "Back"/"Next" buttons
+3. Complete all 6 parts:
+    - Part 1: Introduction
+    - Part 2: Philosophy
+    - Part 3: Body & Symptoms
+    - Part 4: Balance & Mutual Root
+    - Part 5: Language Practice
+    - Part 6: Summary & Exercises
+   
